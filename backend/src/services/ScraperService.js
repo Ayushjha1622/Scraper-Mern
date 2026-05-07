@@ -13,16 +13,16 @@ const scrapeStories =
     try {
       console.log('Scraping stories...');
 
- 
+
 
       const { data } =
         await axios.get(HN_URL);
 
-  
+
 
       const $ = cheerio.load(data);
 
-    
+
       const stories =
         $(".athing")
           .slice(0, 10)
@@ -35,9 +35,9 @@ const scrapeStories =
             .find(".titleline a")
             .text()
             .trim();
-            console.log(
-  `Saved: ${title}`
-);
+        console.log(
+          `Saved: ${title}`
+        );
 
         let url =
           $(story)
@@ -52,12 +52,12 @@ const scrapeStories =
           url = `${HN_URL}/${url}`;
         }
 
-     
+
 
         const subtext =
           $(story).next();
 
-     
+
         const pointsText =
           subtext
             .find(".score")
@@ -67,7 +67,7 @@ const scrapeStories =
         const points =
           parseInt(pointsText) || 0;
 
-    
+
         const author =
           subtext
             .find(".hnuser")

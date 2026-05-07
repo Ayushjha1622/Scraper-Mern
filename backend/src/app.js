@@ -35,11 +35,6 @@ app.use("/api/auth", authRoutes);
 
 app.use("/api/stories", storyRoutes);
 
-/*
-========================================
-ERROR MIDDLEWARE
-========================================
-*/
 
 app.use(notFound);
 
