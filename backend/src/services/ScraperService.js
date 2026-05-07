@@ -35,6 +35,9 @@ const scrapeStories =
             .find(".titleline a")
             .text()
             .trim();
+            console.log(
+  `Saved: ${title}`
+);
 
         let url =
           $(story)

@@ -1,14 +1,33 @@
 import app from "./app.js";
+
 import connectDB from "./config/db.js";
+
 import scrapeStories from "./services/ScraperService.js";
 
-connectDB();
-scrapeStories();
+const startServer = async () => {
+  try {
+    console.log("Starting server...");
 
+    await connectDB();
 
-const PORT =
-  process.env.PORT || 5000;
+    await scrapeStories();
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+    const PORT =
+      process.env.PORT || 5000;
+
+    app.listen(PORT, () => {
+      console.log(
+        `Server running on port ${PORT}`
+      );
+    });
+  } catch (error) {
+    console.error(
+      "Server startup failed:",
+      error.message
+    );
+
+    process.exit(1);
+  }
+};
+
+startServer();
