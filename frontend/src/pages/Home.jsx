@@ -45,7 +45,7 @@ const Home = () => {
 
   const handleBookmark = async (storyId) => {
     try {
-      await API.post(`/stories/${storyId}/bookmark`);
+      await API.post(`/api/stories/${storyId}/bookmark`);
       fetchBookmarks();
     } catch (error) {
       console.log(error);
