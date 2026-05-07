@@ -1,47 +1,52 @@
 import {
+  BrowserRouter,
   Routes,
   Route,
 } from "react-router-dom";
 
+import {
+  AuthProvider,
+} from "./context/AuthContext";
+
 import AuthPage from "./pages/AuthPage";
+
+import Home from "./pages/Home";
+
+import Bookmarks from "./pages/Bookmarks";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
-const Home = () => {
-  return <h1>Home</h1>;
-};
-
-const Bookmarks = () => {
-  return <h1>Bookmarks</h1>;
-};
-
-const App = () => {
+function App() {
   return (
-    <Routes>
-      <Route
-        path="/auth"
-        element={<AuthPage />}
-      />
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route
+            path="/auth"
+            element={<AuthPage />}
+          />
 
-      <Route
-        path="/"
-        element={
-          <ProtectedRoute>
-            <Home />
-          </ProtectedRoute>
-        }
-      />
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            }
+          />
 
-      <Route
-        path="/bookmarks"
-        element={
-          <ProtectedRoute>
-            <Bookmarks />
-          </ProtectedRoute>
-        }
-      />
-    </Routes>
+          <Route
+            path="/bookmarks"
+            element={
+              <ProtectedRoute>
+                <Bookmarks />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
-};
+}
 
 export default App;

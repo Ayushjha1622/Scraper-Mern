@@ -5,17 +5,17 @@ import {
   useState,
 } from "react";
 
-const AuthContext =
-  createContext();
+import API from "../api/axios";
+
+const AuthContext = createContext();
 
 export const AuthProvider = ({
   children,
 }) => {
-  const [user, setUser] =
-    useState(null);
+  const [user, setUser] = useState(null);
 
-  const [token, setToken] =
-    useState(null);
+  const [bookmarks, setBookmarks] =
+    useState([]);
 
   const [loading, setLoading] =
     useState(false);
@@ -24,60 +24,125 @@ export const AuthProvider = ({
     const storedUser =
       localStorage.getItem("user");
 
-    const storedToken =
-      localStorage.getItem("token");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
 
-    if (
-      storedUser &&
-      storedToken
-    ) {
-      setUser(
-        JSON.parse(storedUser)
-      );
-
-      setToken(storedToken);
+      fetchBookmarks();
     }
   }, []);
 
-  const login = async (
-    data
-  ) => {
-    return {
-      success: true,
+  const fetchBookmarks =
+    async () => {
+      try {
+        const { data } =
+          await API.get(
+            "/stories/bookmarks/me"
+          );
+
+        setBookmarks(data);
+      } catch (error) {
+        console.log(error);
+      }
     };
-  };
 
   const register = async (
-    data
+    formData
   ) => {
-    return {
-      success: true,
-    };
+    try {
+      setLoading(true);
+
+      const { data } =
+        await API.post(
+          "/auth/register",
+          formData
+        );
+
+      localStorage.setItem(
+        "token",
+        data.token
+      );
+
+      localStorage.setItem(
+        "user",
+        JSON.stringify(data.user)
+      );
+
+      setUser(data.user);
+
+      await fetchBookmarks();
+
+      return {
+        success: true,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message:
+          error.response?.data?.message,
+      };
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const login = async (
+    formData
+  ) => {
+    try {
+      setLoading(true);
+
+      const { data } =
+        await API.post(
+          "/auth/login",
+          formData
+        );
+
+      localStorage.setItem(
+        "token",
+        data.token
+      );
+
+      localStorage.setItem(
+        "user",
+        JSON.stringify(data.user)
+      );
+
+      setUser(data.user);
+
+      await fetchBookmarks();
+
+      return {
+        success: true,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        message:
+          error.response?.data?.message,
+      };
+    } finally {
+      setLoading(false);
+    }
   };
 
   const logout = () => {
-    localStorage.removeItem(
-      "user"
-    );
-
-    localStorage.removeItem(
-      "token"
-    );
+    localStorage.clear();
 
     setUser(null);
 
-    setToken(null);
+    setBookmarks([]);
   };
 
   return (
     <AuthContext.Provider
       value={{
         user,
-        token,
+        bookmarks,
         loading,
         login,
         register,
         logout,
+        fetchBookmarks,
       }}
     >
       {children}

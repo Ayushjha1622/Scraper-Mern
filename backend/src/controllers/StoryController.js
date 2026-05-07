@@ -7,14 +7,18 @@ import asyncHandler from "../utils/asyncHandler.js";
 export const getStories =
   asyncHandler(
     async (req, res) => {
-      const stories =
-        await Story.find().sort({
-          points: -1,
-        });
+      const page = parseInt(req.query.page) || 1;
+      const limit = parseInt(req.query.limit) || 10;
+      const skip = (page - 1) * limit;
 
-      res.status(200).json(
-        stories
-      );
+      const stories = await Story.find()
+        .sort({ points: -1 })
+        .skip(skip)
+        .limit(limit);
+
+      res.status(200).json({
+        stories,
+      });
     }
   );
 

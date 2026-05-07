@@ -40,39 +40,43 @@ const AuthPage = () => {
   const [error, setError] =
     useState("");
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
+  const handleSignIn =
+    async (e) => {
+      e.preventDefault();
 
-    setError("");
+      setError("");
 
-    const result = await login(
-      loginData
-    );
+      const response =
+        await login(loginData);
 
-    if (result.success) {
-      navigate("/");
-    } else {
-      setError(result.message);
-    }
-  };
+      if (response.success) {
+        navigate("/");
+      } else {
+        setError(
+          response.message
+        );
+      }
+    };
 
-  const handleRegister = async (
-    e
-  ) => {
-    e.preventDefault();
+  const handleSignUp =
+    async (e) => {
+      e.preventDefault();
 
-    setError("");
+      setError("");
 
-    const result = await register(
-      registerData
-    );
+      const response =
+        await register(
+          registerData
+        );
 
-    if (result.success) {
-      navigate("/");
-    } else {
-      setError(result.message);
-    }
-  };
+      if (response.success) {
+        navigate("/");
+      } else {
+        setError(
+          response.message
+        );
+      }
+    };
 
   return (
     <div className="auth-wrapper">
@@ -84,31 +88,45 @@ const AuthPage = () => {
         }`}
       >
         <div className="form-container sign-up-container">
-          <form onSubmit={handleRegister}>
-            <h1>Create Account</h1>
+          <form
+            onSubmit={
+              handleSignUp
+            }
+          >
+            <h1>
+              Create Account
+            </h1>
 
             <input
               type="text"
               placeholder="Name"
-              value={registerData.name}
+              value={
+                registerData.name
+              }
               onChange={(e) =>
                 setRegisterData({
                   ...registerData,
-                  name: e.target.value,
+                  name:
+                    e.target.value,
                 })
               }
+              required
             />
 
             <input
               type="email"
               placeholder="Email"
-              value={registerData.email}
+              value={
+                registerData.email
+              }
               onChange={(e) =>
                 setRegisterData({
                   ...registerData,
-                  email: e.target.value,
+                  email:
+                    e.target.value,
                 })
               }
+              required
             />
 
             <input
@@ -124,38 +142,56 @@ const AuthPage = () => {
                     e.target.value,
                 })
               }
+              required
             />
 
-            <button>
+            <button type="submit">
               {loading
                 ? "Loading..."
                 : "Sign Up"}
             </button>
 
-            <button 
-              type="button" 
+            <button
+              type="button"
               className="mobile-toggle"
-              onClick={() => setIsActive(false)}
+              onClick={() =>
+                setIsActive(false)
+              }
             >
-              Already have an account? Sign In
+              Already have an
+              account? Sign In
             </button>
+
+            {error && (
+              <p className="error-text">
+                {error}
+              </p>
+            )}
           </form>
         </div>
 
         <div className="form-container sign-in-container">
-          <form onSubmit={handleLogin}>
+          <form
+            onSubmit={
+              handleSignIn
+            }
+          >
             <h1>Sign In</h1>
 
             <input
               type="email"
               placeholder="Email"
-              value={loginData.email}
+              value={
+                loginData.email
+              }
               onChange={(e) =>
                 setLoginData({
                   ...loginData,
-                  email: e.target.value,
+                  email:
+                    e.target.value,
                 })
               }
+              required
             />
 
             <input
@@ -171,20 +207,24 @@ const AuthPage = () => {
                     e.target.value,
                 })
               }
+              required
             />
 
-            <button>
+            <button type="submit">
               {loading
                 ? "Loading..."
                 : "Sign In"}
             </button>
 
-            <button 
-              type="button" 
+            <button
+              type="button"
               className="mobile-toggle"
-              onClick={() => setIsActive(true)}
+              onClick={() =>
+                setIsActive(true)
+              }
             >
-              Don't have an account? Sign Up
+              Don't have an
+              account? Sign Up
             </button>
 
             {error && (
@@ -203,11 +243,12 @@ const AuthPage = () => {
               </h1>
 
               <p>
-                Please login with your
-                personal info
+                Please login with
+                your personal info
               </p>
 
               <button
+                type="button"
                 className="ghost"
                 onClick={() =>
                   setIsActive(false)
@@ -223,11 +264,13 @@ const AuthPage = () => {
               </h1>
 
               <p>
-                Enter your details and
-                start your journey
+                Enter your details
+                and start your
+                journey
               </p>
 
               <button
+                type="button"
                 className="ghost"
                 onClick={() =>
                   setIsActive(true)
