@@ -18,7 +18,7 @@ const Home = () => {
   const fetchStories = async (pageNum) => {
     try {
       if (pageNum === 1) setLoading(true);
-      const { data } = await API.get(`/stories?page=${pageNum}&limit=10`);
+      const { data } = await API.get(`/api/stories?page=${pageNum}&limit=10`);
       
       // Handle both { stories: [...] } and [...] formats
       const newStories = Array.isArray(data) ? data : (data.stories || []);
