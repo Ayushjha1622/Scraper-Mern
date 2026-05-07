@@ -16,7 +16,7 @@ const Bookmarks = () => {
     async (storyId) => {
       try {
         await API.post(
-          `/stories/${storyId}/bookmark`
+          `/api/stories/${storyId}/bookmark`
         );
 
         fetchBookmarks();
