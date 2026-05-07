@@ -36,7 +36,7 @@ export const AuthProvider = ({
       try {
         const { data } =
           await API.get(
-            "/stories/bookmarks/me"
+            "/api/stories/bookmarks/me"
           );
 
         setBookmarks(data);
@@ -53,7 +53,7 @@ export const AuthProvider = ({
 
       const { data } =
         await API.post(
-          "/auth/register",
+          "/api/auth/register",
           formData
         );
 
@@ -93,7 +93,7 @@ export const AuthProvider = ({
 
       const { data } =
         await API.post(
-          "/auth/login",
+          "/api/auth/login",
           formData
         );
 
