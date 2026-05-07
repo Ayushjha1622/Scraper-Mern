@@ -1,35 +1,48 @@
 import express from "express";
+
 import dotenv from "dotenv";
+
 import cors from "cors";
+
 import authRoutes from "./routes/authRoutes.js";
+
 import storyRoutes from "./routes/storyRoutes.js";
+
+import notFound from "./middleware/notFoundMiddlesware.js";
+
+import errorHandler from "./middleware/errorMiddleware.js";
 
 dotenv.config();
 
 const app = express();
 
-/*
-========================================
-MIDDLEWARE
-========================================
-*/
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 
-app.use(cors());
 app.use(express.json());
 
+app.get("/", (req, res) => {
+  res.json({
+    success: true,
+    message: "API Running",
+  });
+});
+
 app.use("/api/auth", authRoutes);
+
 app.use("/api/stories", storyRoutes);
+
 /*
 ========================================
-HEALTH CHECK ROUTE
+ERROR MIDDLEWARE
 ========================================
 */
 
-app.get("/", (req, res) => {
-  res.status(200).json({
-    success: true,
-    message: "API Running Successfully",
-  });
-});
+app.use(notFound);
+
+app.use(errorHandler);
 
 export default app;

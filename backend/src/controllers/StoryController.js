@@ -2,9 +2,11 @@ import Story from "../models/Story.js";
 
 import User from "../models/User.js";
 
+import asyncHandler from "../utils/asyncHandler.js";
+
 export const getStories =
-  async (req, res) => {
-    try {
+  asyncHandler(
+    async (req, res) => {
       const stories =
         await Story.find().sort({
           points: -1,
@@ -13,43 +15,34 @@ export const getStories =
       res.status(200).json(
         stories
       );
-    } catch (error) {
-      res.status(500).json({
-        message:
-          "Failed to fetch stories",
-      });
     }
-  };
+  );
 
 export const getSingleStory =
-  async (req, res) => {
-    try {
+  asyncHandler(
+    async (req, res) => {
       const story =
         await Story.findById(
           req.params.id
         );
 
       if (!story) {
-        return res.status(404).json({
-          message:
-            "Story not found",
-        });
+        res.status(404);
+
+        throw new Error(
+          "Story not found"
+        );
       }
 
       res.status(200).json(
         story
       );
-    } catch (error) {
-      res.status(500).json({
-        message:
-          "Failed to fetch story",
-      });
     }
-  };
+  );
 
 export const toggleBookmark =
-  async (req, res) => {
-    try {
+  asyncHandler(
+    async (req, res) => {
       const storyId =
         req.params.id;
 
@@ -59,15 +52,17 @@ export const toggleBookmark =
         );
 
       const alreadyBookmarked =
-        user.bookmarks.includes(
-          storyId
+        user.bookmarks.some(
+          (bookmark) =>
+            bookmark.toString() ===
+            storyId
         );
 
       if (alreadyBookmarked) {
         user.bookmarks =
           user.bookmarks.filter(
-            (id) =>
-              id.toString() !==
+            (bookmark) =>
+              bookmark.toString() !==
               storyId
           );
 
@@ -76,6 +71,7 @@ export const toggleBookmark =
         return res.status(200).json({
           message:
             "Bookmark removed",
+
           bookmarks:
             user.bookmarks,
         });
@@ -90,20 +86,16 @@ export const toggleBookmark =
       res.status(200).json({
         message:
           "Bookmark added",
+
         bookmarks:
           user.bookmarks,
       });
-    } catch (error) {
-      res.status(500).json({
-        message:
-          "Bookmark operation failed",
-      });
     }
-  };
+  );
 
 export const getBookmarks =
-  async (req, res) => {
-    try {
+  asyncHandler(
+    async (req, res) => {
       const user =
         await User.findById(
           req.user._id
@@ -112,10 +104,5 @@ export const getBookmarks =
       res.status(200).json(
         user.bookmarks
       );
-    } catch (error) {
-      res.status(500).json({
-        message:
-          "Failed to fetch bookmarks",
-      });
     }
-  };
+  );
