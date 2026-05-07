@@ -3,28 +3,41 @@ import {
   Route,
 } from "react-router-dom";
 
+import AuthPage from "./pages/AuthPage";
+
+import ProtectedRoute from "./components/ProtectedRoute";
+
+const Home = () => {
+  return <h1>Home</h1>;
+};
+
+const Bookmarks = () => {
+  return <h1>Bookmarks</h1>;
+};
+
 const App = () => {
   return (
     <Routes>
       <Route
+        path="/auth"
+        element={<AuthPage />}
+      />
+
+      <Route
         path="/"
-        element={<h1>Home</h1>}
-      />
-
-      <Route
-        path="/login"
-        element={<h1>Login</h1>}
-      />
-
-      <Route
-        path="/register"
-        element={<h1>Register</h1>}
+        element={
+          <ProtectedRoute>
+            <Home />
+          </ProtectedRoute>
+        }
       />
 
       <Route
         path="/bookmarks"
         element={
-          <h1>Bookmarks</h1>
+          <ProtectedRoute>
+            <Bookmarks />
+          </ProtectedRoute>
         }
       />
     </Routes>
