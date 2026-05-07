@@ -87,7 +87,7 @@ Scraper-Mern/
 ## 🚀 Live Demo & Walkthrough
 
 - **Live URL:** https://scraper-mern.vercel.app/
-- **Demo Video:** https://loom.com/your-video-link
+- **Demo Video:** https://www.loom.com/share/e26302a913fc4f56b9c90ad375fe26c1
 
 ---
 
