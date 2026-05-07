@@ -8,16 +8,11 @@ const connectDB = async () => {
       );
 
     console.log(`
-=================================
-MongoDB Connected
 HOST: ${conn.connection.host}
-=================================
-    `);
+`);
   } catch (error) {
     console.error(`
-=================================
-DATABASE CONNECTION ERROR
-=================================
+
 ${error.message}
     `);
 
